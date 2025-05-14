@@ -1,0 +1,4 @@
+minilibx-linux
+*.o
+*.a
+objs
