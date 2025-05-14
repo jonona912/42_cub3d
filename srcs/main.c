@@ -36,31 +36,26 @@ int main(int argc, char **argv)
 	}
 	
 	game.map = validate_map(argv[1]);
-	if (!game.map)
-	{
-		ft_putstr_fd("Error: Invalid map\n", STDERR_FILENO);
-		return (1);
-	}
 	print_map(game.map);
-	game.mlx = mlx_init();
-	if (!game.mlx)
-	{
-		ft_putstr_fd("Error: Failed to initialize MiniLibX\n", STDERR_FILENO);
-		free_map(game.map);
-		return (1);
-	}
-	game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, WIN_TITLE);
-	if (!game.win)
-	{
-		ft_putstr_fd("Error: Failed to create window\n", STDERR_FILENO);
-		free_map(game.map);
-		return (1);
-	}
+	// game.mlx = mlx_init();
+	// if (!game.mlx)
+	// {
+	// 	ft_putstr_fd("Error: Failed to initialize MiniLibX\n", STDERR_FILENO);
+	// 	free_map(game.map);
+	// 	return (1);
+	// }
+	// game.win = mlx_new_window(game.mlx, WIN_WIDTH, WIN_HEIGHT, WIN_TITLE);
+	// if (!game.win)
+	// {
+	// 	ft_putstr_fd("Error: Failed to create window\n", STDERR_FILENO);
+	// 	free_map(game.map);
+	// 	return (1);
+	// }
 	
-	mlx_hook(game.win, KeyPress, KeyPressMask, &handle_keypress, &game);
-	mlx_hook(game.win, DestroyNotify, StructureNotifyMask, &handle_close, &game);
+	// mlx_hook(game.win, KeyPress, KeyPressMask, &handle_keypress, &game);
+	// mlx_hook(game.win, DestroyNotify, StructureNotifyMask, &handle_close, &game);
 	
-	mlx_loop(game.mlx);
+	// mlx_loop(game.mlx);
 
 	free_map(game.map);
 	return (0);
