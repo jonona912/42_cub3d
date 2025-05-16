@@ -6,5 +6,7 @@
 #include "map_validation.h"
 #include "map_creation.h"
 
+// print_debugging_fts.c
+void print_map(char **map);
 
 #endif

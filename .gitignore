@@ -2,3 +2,10 @@ minilibx-linux
 *.o
 *.a
 objs
+cub3d
+images_non_xpm
+gimp_files
+.vscode
+# create mlx_init.c
+# create 2D window
+# 

@@ -4,8 +4,8 @@ void	free_map(char **map)
 {
 	int i;
 
-	if (!map)
-		return;
+	if (map == NULL)
+		return ;
 	i = 0;
 	while (map[i])
 	{
