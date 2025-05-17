@@ -6,6 +6,8 @@ cub3d
 images_non_xpm
 gimp_files
 .vscode
+pseudo3d
+test_2.c
 # create mlx_init.c
 # create 2D window
 # 

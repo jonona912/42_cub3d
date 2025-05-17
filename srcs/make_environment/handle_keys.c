@@ -38,3 +38,12 @@ int handle_keyrelease(int keysym, t_game *game)
         game->key_right = 0;
     return (0);
 }
+
+int handle_close(t_game *game)
+{
+	if (game->map)
+		free_map(game->map);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	exit(0);
+}

@@ -1,19 +1,39 @@
 #include "main_header.h"
 
-void cast_rays_2(t_game *game, double dir_angle) {
+
+// divide rays into 2 parts 
+// // calculate the distance to the wall
+// // draw the line
+int cast_rays(t_game *game, double dir_angle, double *distance_to_wall)
+{
     // Ray direction
     double dir_x = cos(dir_angle);
     double dir_y = sin(dir_angle);
-    game->dir_x = dir_x; // Store for consistency
-    game->dir_y = dir_y;
-
-    // Delta distances (distance along ray to cross one grid unit)
-    double delta_dist_x = (dir_x == 0) ? 1e30 : fabs(1.0 / dir_x);
-    double delta_dist_y = (dir_y == 0) ? 1e30 : fabs(1.0 / dir_y);
-
+    double delta_dist_x;
+    double delta_dist_y;
+    if (dir_x == 0) {
+        delta_dist_x = 1e30; // Avoid division by zero
+    } else {
+        delta_dist_x = fabs(1.0 / dir_x);
+    }
+    if (dir_y == 0) {
+        delta_dist_y = 1e30; // Avoid division by zero
+    } else {
+        delta_dist_y = fabs(1.0 / dir_y);
+    }
     // Step direction
-    int step_x = (dir_x > 0) ? 1 : -1;
-    int step_y = (dir_y > 0) ? 1 : -1;
+    int step_x;
+    if (dir_x > 0) {
+        step_x = 1;
+    } else {
+        step_x = -1;
+    }
+    int step_y;
+    if (dir_y > 0) {
+        step_y = 1;
+    } else {
+        step_y = -1;
+    }
 
     // Determine next grid lines
     double next_x = (dir_x >= 0) ? ceil(game->pos_x) : floor(game->pos_x);
@@ -35,7 +55,6 @@ void cast_rays_2(t_game *game, double dir_angle) {
     } else {
         distance_to_y_wall = 1e30; // Ray parallel to x-axis
     }
-
     // DDA loop to find wall
     int map_x = (int)game->pos_x;
     int map_y = (int)game->pos_y;
@@ -51,23 +70,19 @@ void cast_rays_2(t_game *game, double dir_angle) {
                 if (game->map[map_y][map_x] != '1')
             distance_to_y_wall += delta_dist_y;
         }
-
         // Check if we hit a wall (assuming map[y][x] and '1' is a wall)
-        if (map_y >= 0 && map_y < 5 && map_x >= 0 && map_x < 6) { // Assuming 5x5 map
+        if (map_y >= 0 && map_y < game->map_rows && map_x >= 0 && map_x < game->map_cols) { 
             if (game->map[map_y][map_x] == '1') {
                 hit = 1;
-                printf("Wall hit at: (%d, %d)\n", map_x, map_y);
+                // printf("Wall hit at: (%d, %d)\n", map_x, map_y);
             }
         } else {
             // Out of bounds, stop the loop
             printf("Ray out of map bounds at: (%d, %d)\n", map_x, map_y);
-            break;
+            return (-1);
         }
     }
-
-    // Draw direction line (using the shorter distance for visualization)
-    int pixel_x = (int)(game->pos_x * 64) - 5;
-    int pixel_y = (int)(game->pos_y * 64) - 5;
-    double first_cross_dist = fmin(distance_to_x_wall, distance_to_y_wall);
-    draw_direction_line(game, pixel_x, pixel_y, first_cross_dist * 64);
+    *distance_to_wall = fmin(distance_to_x_wall, distance_to_y_wall);
+    // draw_direction_line(game, pixel_x, pixel_y, distance_to_wall * GRID_SIZE, dir_x, dir_y);
+    return (0);
 }
