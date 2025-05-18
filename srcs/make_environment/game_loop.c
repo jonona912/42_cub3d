@@ -63,7 +63,7 @@ double get_delta_time(void)
 
 void handle_wasd_movement(t_game *game, double *move_x, double *move_y, double delta_time)
 {
-	double move_speed = 5.0;
+	double move_speed = 0.5;
 
 	if (game->key_w)
 	{

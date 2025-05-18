@@ -11,22 +11,39 @@
 #include <sys/time.h>
 
 /* MiniLibX Window Settings */
-#define GRID_SIZE 32 // for 2D map grid size
+#define GRID_SIZE 16 // for 2D map grid size
 #define TEXTURE_SIZE 64 // for texture size
 #define WIN_WIDTH 1920
 #define WIN_HEIGHT 1080
 #define WIN_TITLE "Cub3D - Raycaster"
 
+#define BLUE 0x0000FF
+#define GREEN 0x00FF00
+#define RED 0xFF0000
+#define WHITE 0xFFFFFF
+#define BLACK 0x000000
+#define PURPLE 0x800080
+#define YELLOW 0xFFFF00
+#define CYAN 0x00FFFF
+#define MAGENTA 0xFF00FF
+
+
 typedef struct s_textures_info {
 	char	*n_wall_path;
-	char	*floor_path;
+	char	*w_wall_path;
+	char	*s_wall_path;
+	char	*e_wall_path;
+	double	floor_color;
+	double	ceiling_color;
 	int		width;
 	int		height;
 } t_textures_info;
 
 typedef struct s_loaded_textures {
 	void	*n_wall;
-	void	*floor;
+	void	*w_wall;
+	void	*s_wall;
+	void	*e_wall;
 } t_loaded_textures;
 
 
@@ -37,15 +54,22 @@ typedef struct s_game
 	void			*win;           /* Window pointer */
 	void			*img;
 	char			*img_data;
-	void			*img_3d;
-	char			*img_data_3d;
+	// void			*img_3d;
+	// char			*img_data_3d;
 	char			**map;
 	int				bpp;
 	int				size_line;
 	int				endian;
-	int				bpp_3d;
-	int				size_line_3d;
-	int				endian_3d;
+	int				texture_bpp;
+	int				texture_size_line;
+	int				texture_endian;
+	int				x_start_minimap;
+	int				y_start_minimap;
+	int				side;
+	double			perp_wall_dist;
+	// int				bpp_3d;
+	// int				size_line_3d;
+	// int				endian_3d;
 	int				projected_slice_height;
 	int				map_rows;
 	int				map_cols;
@@ -123,4 +147,6 @@ void put_2d_map(t_game *game);
 
 // Add to main_header.h
 int cast_rays(t_game *game, double dir_angle, double *first_cross_dist);
+
+int extract_map_info(char *map_file, t_game *game);
 #endif

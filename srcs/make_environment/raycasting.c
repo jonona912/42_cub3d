@@ -63,10 +63,12 @@ int cast_rays(t_game *game, double dir_angle, double *distance_to_wall)
         // Choose the closer grid line (x or y)
         if (distance_to_x_wall < distance_to_y_wall) {
             map_x += step_x;
+            game->side = 0; // 0 for vertical wall
             if (game->map[map_y][map_x] != '1')
                 distance_to_x_wall += delta_dist_x;
         } else {
             map_y += step_y;
+            game->side = 1; // 1 for horizontal wall
                 if (game->map[map_y][map_x] != '1')
             distance_to_y_wall += delta_dist_y;
         }
