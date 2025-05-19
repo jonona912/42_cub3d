@@ -27,7 +27,9 @@ SRCS = main.c \
 		make_environment/raycasting.c \
 		make_environment/handle_keys.c \
 		make_environment/game_loop.c \
-		make_environment/put_map.c
+		make_environment/put_map.c \
+		make_environment/put_map_utils.c \
+		make_environment/put_minimap.c
 
 SRC_DIR = srcs
 OBJ_DIR = objs

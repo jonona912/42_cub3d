@@ -281,6 +281,8 @@ static int validate_map_content(char **map, int start_idx, t_game *game) {
                 else if (c == 'W')
                     game->dir_angle = M_PI;
                 clean_map[i][j] = '0'; // Replace player with floor
+                game->dir_x = cos(game->dir_angle);
+                game->dir_y = sin(game->dir_angle);
             }
             // Check borders
             if ((i == 0 || i == rows - 1 || j == 0 || j == max_cols - 1) &&

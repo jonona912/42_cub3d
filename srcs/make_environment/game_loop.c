@@ -111,7 +111,8 @@ int handle_movement_and_rotation(t_game *game, double *move_x, double *move_y)
 		game->dir_angle -= 2 * M_PI;
 	if (game->dir_angle < 0)
 		game->dir_angle += 2 * M_PI;
-	if (*move_x != 0 && *move_y != 0) {
+
+	if ((*move_x != 0 || game->dir_y == 0) && (*move_y != 0 || game->dir_x == 1)) {
 		length = sqrt((*move_x) * (*move_x) + (*move_y) * (*move_y));
 		if (length > 0) {
 			*move_x = *move_x / length * move_speed * delta_time;
@@ -120,8 +121,6 @@ int handle_movement_and_rotation(t_game *game, double *move_x, double *move_y)
 	}
 	return (rotated);
 }
-
-
 
 int two_d_game_loop(t_game *game)
 {
@@ -133,10 +132,6 @@ int two_d_game_loop(t_game *game)
 	// cast_fov_rays(game);
 	if (is_move_valid(game, move_x, move_y) || rotated || !frame_count) {
 		put_2d_map(game);
-		// draw_map(game, &game->loaded_textures, &game->textures_info);
-		// int pixel_x = (int)(game->pos_x * GRID_SIZE) - 5; // update player position
-		// int pixel_y = (int)(game->pos_y * GRID_SIZE) - 5;
-		// print_pixel(game, pixel_x, pixel_y);
 	}
 	frame_count++;
 	return (0);

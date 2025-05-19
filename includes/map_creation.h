@@ -67,6 +67,7 @@ typedef struct s_game
 	int				y_start_minimap;
 	int				side;
 	double			perp_wall_dist;
+	double			true_ray_dist;
 	// int				bpp_3d;
 	// int				size_line_3d;
 	// int				endian_3d;
@@ -134,7 +135,10 @@ void set_player_direction(t_game *game);
 int two_d_game_loop(t_game *game);
 int is_valid_position(t_game *game, double new_x, double new_y);
 
-
+// put_map_utils.c
+void clear_screen(t_game *game);
+void put_pixel(t_game *game, int x, int y, int color);
+void print_ceiling_floor(t_game *game);
 
 // put_map.c
 void put_grid_boundary(t_game *game, int x, int y, int color);
@@ -142,8 +146,12 @@ void put_map_background(t_game *game);
 void draw_map(t_game *game, t_loaded_textures *loaded_textures, t_textures_info *texture_info);
 void print_pixel(t_game *game, int x, int y);
 void draw_direction_line(t_game *game, int distance, double dir_x, double dir_y);
-void put_pixel(t_game *game, int x, int y, int color);
 void put_2d_map(t_game *game);
+
+// put_minimap.c
+void put_map_background_2(t_game *game, int x_offset, int y_offset);
+void put_player_position(t_game *game);
+void cast_fov_rays(t_game *game);
 
 // Add to main_header.h
 int cast_rays(t_game *game, double dir_angle, double *first_cross_dist);

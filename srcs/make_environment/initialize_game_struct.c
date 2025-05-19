@@ -119,7 +119,7 @@ int	initialize_game_struct(t_game *game)
 {
 	set_map_dimensions(game);
 	game->mlx = mlx_init();
-	game->projected_slice_height = TEXTURE_SIZE * 255; // 255 arbitrary
+	game->projected_slice_height = TEXTURE_SIZE * 355; // 255 arbitrary
 	if (!game->mlx)
 	{
 		ft_putstr_fd("Error: Failed to initialize MiniLibX\n", STDERR_FILENO);
