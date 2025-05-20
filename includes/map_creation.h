@@ -41,9 +41,13 @@ typedef struct s_textures_info {
 
 typedef struct s_loaded_textures {
 	void	*n_wall;
+	char	*n_wall_data;
 	void	*w_wall;
+	char	*w_wall_data;
 	void	*s_wall;
+	char	*s_wall_data;
 	void	*e_wall;
+	char	*e_wall_data;
 } t_loaded_textures;
 
 
@@ -66,6 +70,7 @@ typedef struct s_game
 	int				x_start_minimap;
 	int				y_start_minimap;
 	int				side;
+	double			ray_step;
 	double			perp_wall_dist;
 	double			true_ray_dist;
 	// int				bpp_3d;
@@ -81,8 +86,8 @@ typedef struct s_game
 	double			dir_angle;
 	double			dir_x;          /* Direction vector X */
 	double			dir_y;          /* Direction vector Y */
-	double			plane_x;        /* Camera plane X */
-	double			plane_y;        /* Camera plane Y */
+	// double			plane_x;        /* Camera plane X */
+	// double			plane_y;        /* Camera plane Y */
 	double			temp_x_move;
 	double			temp_y_move;
 	int				key_w;
@@ -118,22 +123,24 @@ int handle_close(t_game *game);
 
 
 // initialize_mlx.c
-int initialize_mlx(t_game *game);
+int initialize_mlx_and_launch_game(t_game *game);
 void put_pixel(t_game *game, int x, int y, int color);
 
 // handle_keys.c
 int handle_keypress(int keysym, t_game *game);
 int handle_keyrelease(int keysym, t_game *game);
 int handle_close(t_game *game);
-
+void    free_game_struct(t_game *game);
 // initialize_game_struct.c
 int initialize_game_struct(t_game *game);
-void initialize_keys(t_game *game);
+void initialize_game_vars(t_game *game);
 void set_player_direction(t_game *game);
 
 // game_loop.c
-int two_d_game_loop(t_game *game);
+int game_loop(t_game *game);
 int is_valid_position(t_game *game, double new_x, double new_y);
+double get_delta_time(void);
+void update_move(t_game *game, double move_x, double move_y);
 
 // put_map_utils.c
 void clear_screen(t_game *game);
@@ -146,7 +153,7 @@ void put_map_background(t_game *game);
 void draw_map(t_game *game, t_loaded_textures *loaded_textures, t_textures_info *texture_info);
 void print_pixel(t_game *game, int x, int y);
 void draw_direction_line(t_game *game, int distance, double dir_x, double dir_y);
-void put_2d_map(t_game *game);
+void draw_screen(t_game *game);
 
 // put_minimap.c
 void put_map_background_2(t_game *game, int x_offset, int y_offset);

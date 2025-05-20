@@ -1,65 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initialize_game_struct.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/20 12:29:07 by zkhojazo          #+#    #+#             */
+/*   Updated: 2025/05/20 13:36:34 by zkhojazo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "main_header.h"
 
-void	set_player_direction(t_game *game)
-{
-	int i = 0;
-	int j;
-	char direction;
-
-	/* Find player position and direction in map */
-	while (game->map[i])
-	{
-		j = 0;
-		while (game->map[i][j]) // set angle 	game->dir_angle = 0;
-		{
-			direction = game->map[i][j];
-			if (direction == 'N' || direction == 'S' || direction == 'E' || direction == 'W')
-			{
-				game->pos_x = j + 0.5; /* Center of the tile */
-				game->pos_y = i + 0.5;
-				
-				/* Set direction based on player orientation */
-				if (direction == 'N')
-				{
-					game->dir_x = 0;
-					game->dir_y = -1;
-					game->plane_x = 0.66;
-					game->plane_y = 0;
-					game->dir_angle = 3 * M_PI / 2;
-				}
-				else if (direction == 'S')
-				{
-					game->dir_x = 0;
-					game->dir_y = 1;
-					game->plane_x = -0.66;
-					game->plane_y = 0;
-					game->dir_angle = M_PI / 2;
-				}
-				else if (direction == 'E')
-				{
-					game->dir_x = 1;
-					game->dir_y = 0;
-					game->plane_x = 0;
-					game->plane_y = 0.66;
-					game->dir_angle = 0;
-				}
-				else if (direction == 'W')
-				{
-					game->dir_x = -1;
-					game->dir_y = 0;
-					game->plane_x = 0;
-					game->plane_y = -0.66;
-					game->dir_angle = M_PI;
-				}
-				return;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	initialize_keys(t_game *game)
+void	initialize_game_vars(t_game *game)
 {
 	game->key_w = 0;
 	game->key_a = 0;
@@ -67,42 +20,48 @@ void	initialize_keys(t_game *game)
 	game->key_d = 0;
 	game->key_left = 0;
 	game->key_right = 0;
+	game->ray_step = (M_PI / 3) / WIN_WIDTH;
 }
 
-int	load_textures(t_game *game, t_loaded_textures *loaded_textures, t_textures_info *texture_info)
+// txld = texture load
+// txinfo = texture info
+int	load_textures(t_game *game, t_loaded_textures *txld,
+	t_textures_info *txinfo)
 {
-	loaded_textures->n_wall = mlx_xpm_file_to_image(game->mlx, texture_info->n_wall_path, &texture_info->width, &texture_info->height);
-	if (!loaded_textures->n_wall)
-	{
-		ft_putstr_fd("Error: Failed to load north wall texture\n", STDERR_FILENO);
-		return (-1);
-	}
-	loaded_textures->w_wall = mlx_xpm_file_to_image(game->mlx, texture_info->w_wall_path, &texture_info->width, &texture_info->height);
-	if (!loaded_textures->w_wall)
-	{
-		ft_putstr_fd("Error: Failed to load west wall texture\n", STDERR_FILENO);
-		return (-1);
-	}
-	loaded_textures->s_wall = mlx_xpm_file_to_image(game->mlx, texture_info->s_wall_path, &texture_info->width, &texture_info->height);
-	if (!loaded_textures->s_wall)
-	{
-		ft_putstr_fd("Error: Failed to load south wall texture\n", STDERR_FILENO);
-		return (-1);
-	}
-	loaded_textures->e_wall = mlx_xpm_file_to_image(game->mlx, texture_info->e_wall_path, &texture_info->width, &texture_info->height);
-	if (!loaded_textures->e_wall)
-	{
-		ft_putstr_fd("Error: Failed to load east wall texture\n", STDERR_FILENO);
-		return (-1);
-	}
+	txld->n_wall = mlx_xpm_file_to_image(game->mlx, txinfo->n_wall_path,
+			&txinfo->width, &txinfo->height);
+	if (!txld->n_wall)
+		return (ft_putstr_fd("Error: North wall\n", STDERR_FILENO), -1);
+	txld->n_wall_data = mlx_get_data_addr(txld->n_wall, &game->texture_bpp,
+			&game->texture_size_line, &game->texture_endian);
+	txld->w_wall = mlx_xpm_file_to_image(game->mlx, txinfo->w_wall_path,
+			&txinfo->width, &txinfo->height);
+	if (!txld->w_wall)
+		return (ft_putstr_fd("Error: West wall\n", STDERR_FILENO), -1);
+	txld->w_wall_data = mlx_get_data_addr(txld->w_wall, &game->texture_bpp,
+			&game->texture_size_line, &game->texture_endian);
+	txld->s_wall = mlx_xpm_file_to_image(game->mlx, txinfo->s_wall_path,
+			&txinfo->width, &txinfo->height);
+	if (!txld->s_wall)
+		return (ft_putstr_fd("Error: South wall\n", STDERR_FILENO), -1);
+	txld->s_wall_data = mlx_get_data_addr(txld->s_wall, &game->texture_bpp,
+			&game->texture_size_line, &game->texture_endian);
+	txld->e_wall = mlx_xpm_file_to_image(game->mlx, txinfo->e_wall_path,
+			&txinfo->width, &txinfo->height);
+	if (!txld->e_wall)
+		return (ft_putstr_fd("Error: East wall\n", STDERR_FILENO), -1);
+	txld->e_wall_data = mlx_get_data_addr(txld->e_wall, &game->texture_bpp,
+			&game->texture_size_line, &game->texture_endian);
 	return (0);
 }
 
-void	set_map_dimensions(t_game *game)
+void	set_minimap_dimensions(t_game *game)
 {
-	int i = 0;
-	int j = 0;
+	int	i;
+	int	j;
 
+	i = 0;
+	j = 0;
 	while (game->map[i])
 		i++;
 	game->map_height = i * GRID_SIZE;
@@ -111,15 +70,15 @@ void	set_map_dimensions(t_game *game)
 		j++;
 	game->map_width = j * GRID_SIZE;
 	game->map_cols = j;
-	game->x_start_minimap = (WIN_WIDTH - game->map_width) - 10; // return error if game_map width is too long
+	game->x_start_minimap = (WIN_WIDTH - game->map_width) - 10;
 	game->y_start_minimap = (WIN_HEIGHT - game->map_height) - 10;
 }
 
 int	initialize_game_struct(t_game *game)
 {
-	set_map_dimensions(game);
+	set_minimap_dimensions(game);
 	game->mlx = mlx_init();
-	game->projected_slice_height = TEXTURE_SIZE * 355; // 255 arbitrary
+	game->projected_slice_height = TEXTURE_SIZE * 255;
 	if (!game->mlx)
 	{
 		ft_putstr_fd("Error: Failed to initialize MiniLibX\n", STDERR_FILENO);
@@ -131,17 +90,14 @@ int	initialize_game_struct(t_game *game)
 		ft_putstr_fd("Error: Failed to create window\n", STDERR_FILENO);
 		return (-1);
 	}
-	// game->img = mlx_new_image(game->mlx, game->map_width, game->map_height);
 	game->img = mlx_new_image(game->mlx, WIN_WIDTH, WIN_HEIGHT);
-	game->img_data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line, &game->endian);
-	// game->img_3d = mlx_new_image(game->mlx, 1920, 1080);
-	// game->img_data_3d = mlx_get_data_addr(game->img_3d, &game->bpp_3d, &game->size_line_3d, &game->endian_3d);
+	game->img_data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
+			&game->endian);
 	if (load_textures(game, &game->loaded_textures, &game->textures_info) == -1)
 	{
 		ft_putstr_fd("Error: Failed to load textures\n", STDERR_FILENO);
 		return (-1);
 	}
-	initialize_keys(game);
-	set_player_direction(game);
+	initialize_game_vars(game);
 	return (0);
 }
