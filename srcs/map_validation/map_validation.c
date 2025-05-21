@@ -306,8 +306,8 @@ static int validate_map_content(char **map, int start_idx, t_game *game) {
         return -1;
 
     game->map = clean_map;
-    game->map_rows = rows;
-    game->map_cols = max_cols;
+    game->map_rows = rows; // don't know what for
+    game->map_cols = max_cols; // don't know what for
     return 0;
 }
 
