@@ -9,7 +9,7 @@
 </p>
 
 <h3 align="center">
-	<a href="#️-about">About</a>
+	<a href="#-about-the-project">About</a>
 	<span> · </span>
 	<a href="#️-usage">Usage</a>
 	<span> · </span>
