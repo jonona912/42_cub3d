@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 15:33:51 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/05/21 11:34:45 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/06/06 11:39:30 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,18 @@
 
 typedef struct s_textures_info
 {
-	char	*n_wall_path; // string created in map validation
-	char	*w_wall_path; // string created in map validation
-	char	*s_wall_path; // string created in map validation
-	char	*e_wall_path; // string created in map validation
-	double	floor_color;  // double created in map validation
-	double	ceiling_color; // double created in map validation
+	char	*n_wall_path;
+	char	*w_wall_path;
+	char	*s_wall_path;
+	char	*e_wall_path;
+	double	floor_color;
+	double	ceiling_color;
+	int		has_no;
+	int		has_so;
+	int		has_we;
+	int		has_ea;
+	int		has_f;
+	int		has_c;
 	int		width;
 	int		height;
 }	t_textures_info;
@@ -68,7 +74,8 @@ typedef struct s_game
 	void				*win;
 	void				*img;
 	char				*img_data;
-	char				**map; // final result then pos_x and pos_y can b
+	char				**map;
+	int					player_count;
 	int					bpp;
 	int					size_line;
 	int					endian;
@@ -84,10 +91,10 @@ typedef struct s_game
 	int					projected_slice_height;
 	int					map_rows;
 	int					map_cols;
-	int					map_width; // int created in map validation
-	int					map_height;// int created in map validation
-	double				pos_x; // double created in map validation (optional)
-	double				pos_y; // double created in map validation (optional)
+	int					map_width;
+	int					map_height;
+	double				pos_x;
+	double				pos_y;
 	double				dir_angle;
 	double				dir_x;
 	double				dir_y;
@@ -194,5 +201,5 @@ void	cast_fov_rays(t_game *game);
 // Add to main_header.h
 int		cast_rays(t_game *game, double dir_angle, double *first_cross_dist);
 
-int		extract_map_info(char *map_file, t_game *game);
+//int		extract_map_info(char *map_file, t_game *game);
 #endif

@@ -6,7 +6,7 @@
 /*   By: zkhojazo <zkhojazo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 21:02:56 by zkhojazo          #+#    #+#             */
-/*   Updated: 2025/02/05 11:35:32 by zkhojazo         ###   ########.fr       */
+/*   Updated: 2025/06/06 13:36:03 by zkhojazo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,12 @@ char	*get_next_line(int fd)
 
 	read_n = 0;
 	line_lst = NULL;
+	if (fd == -10)
+	{
+		free(residual);
+		residual = NULL;
+		return (NULL);
+	}
 	if (residual)
 	{
 		while (*(residual + read_n))
@@ -126,10 +132,10 @@ char	*get_next_line(int fd)
 // 	// fd = open("sth.txt", O_RDONLY);
 // 	// fd = open("1char.txt", O_RDONLY);
 // 	// fd = open("one_line_no_nl.txt", O_RDONLY);
-// 	// fd = open("variable_nls.txt", O_RDONLY);
-// 	fd = 0;
+// 	fd = open("color_invalid_rgb.cub", O_RDONLY);
+// 	// fd = 0;
 // 	printf("FD: %d\nBUFFSIZE: %d\n", fd, BUFFER_SIZE);
-// 	while (i < 14)
+// 	while (i < 30)
 // 	{
 // 		result = get_next_line(fd);
 // 		printf("result %d: %s\n", i + 1, result);
